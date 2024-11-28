@@ -8,5 +8,5 @@ export default function AboutLayout({
       <h2>소개 페이지 공통</h2>
       {children}
     </>
-  )
+  );
 }

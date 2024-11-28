@@ -3,5 +3,5 @@ export default function Article() {
     <>
       <div>게시판</div>
     </>
-  )
+  );
 }
