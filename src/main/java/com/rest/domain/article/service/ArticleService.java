@@ -2,8 +2,10 @@ package com.rest.domain.article.service;
 
 import com.rest.domain.article.entity.Article;
 import com.rest.domain.article.repository.ArticleRepository;
+import com.rest.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +23,19 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
-    public void create(String subject, String content) {
+    @Transactional
+    public RsData<Article> create(String subject, String content) {
         Article article = Article.builder()
                 .subject(subject)
                 .content(content)
                 .build();
 
         articleRepository.save(article);
+
+        return RsData.of(
+                "S-2",
+                "게시물이 생성되었습니다.",
+                article
+        );
     }
 }
