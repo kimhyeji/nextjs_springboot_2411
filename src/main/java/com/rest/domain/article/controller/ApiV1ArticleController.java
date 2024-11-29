@@ -3,13 +3,12 @@ package com.rest.domain.article.controller;
 import com.rest.domain.article.entity.Article;
 import com.rest.domain.article.service.ArticleService;
 import com.rest.global.rsData.RsData;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,8 +44,23 @@ public class ApiV1ArticleController {
                 new ArticleResponse(article)
         )).orElseGet(() -> RsData.of(
                 "F-1",
-                "%d번 게시물은 존재하지 않습니다.".formatted(id),
-                null
+                "%d번 게시물은 존재하지 않습니다.".formatted(id)
         ));
+    }
+
+    @Data
+    public static class WriteRequest {
+        @NotBlank
+        private String subject;
+
+        @NotBlank
+        private String content;
+    }
+
+    @PostMapping("")
+    public RsData<Article> write(@RequestBody WriteRequest writeRequest) {
+        articleService.create(writeRequest.getSubject(), writeRequest.getContent());
+        System.out.println(writeRequest.getSubject());
+        return RsData.of("","");
     }
 }
