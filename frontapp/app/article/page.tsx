@@ -93,7 +93,6 @@ function ArticleForm({fetchArticles}) {
           <input type="text" name="content" onChange={handleChange}/>
         </label>
         <input type="submit" value="등록" />
-        {/* <button type="submit">등록</button> */}
       </form>
     </>
   )
