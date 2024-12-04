@@ -1,5 +1,6 @@
 package com.rest.domain.member.controller;
 
+import com.rest.domain.member.dto.MemberDto;
 import com.rest.domain.member.entity.Member;
 import com.rest.domain.member.service.MemberService;
 import com.rest.global.rsData.RsData;
@@ -27,14 +28,18 @@ public class ApiV1MemberController {
     @Getter
     @AllArgsConstructor
     public static class LoginResponseBody {
-        private Member member;
+        private MemberDto memberDto;
     }
 
     @PostMapping("/login")
     public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody) {
         // username, password => accessToken
-        memberService.authAndMakeTokens(loginRequestBody.getUsername(), loginRequestBody.getPassword());
+        RsData<MemberService.AuthAndMakeTokensResponseBody> authAndMakeTokensRs = memberService.authAndMakeTokens(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
-        return RsData.of("ok", "ok");
+        return RsData.of(
+                authAndMakeTokensRs.getResultCode(),
+                authAndMakeTokensRs.getMsg(),
+                new LoginResponseBody(new MemberDto(authAndMakeTokensRs.getData().getMember()))
+                );
     }
 }
