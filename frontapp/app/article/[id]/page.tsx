@@ -17,8 +17,8 @@ export default function ArticleDetail() {
   return(
     <>
       <h4>게시판 상세 {params.id}번</h4>
-      <div>{article.createDate}</div>
-      <div>{article.modifyDate}</div>
+      <div>{article.createdDate}</div>
+      <div>{article.modifiedDate}</div>
       <div>{article.subject}</div>
       <div>{article.content}</div>
       <Link href={`/article/${params.id}/edit`}>수정</Link>

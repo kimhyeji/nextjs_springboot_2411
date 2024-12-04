@@ -39,7 +39,7 @@ export default function ArticleDetail() {
         <ul>
           {articles.map(article => 
             <li key={article.id}>
-              {article.id} / <Link href={`/article/${article.id}`}>{article.subject}</Link> / {article.createDate}
+              {article.id} / <Link href={`/article/${article.id}`}>{article.subject}</Link> / {article.createdDate}
               <button onClick={() => handleDelete(article.id)}>삭제</button>
             </li>
           )}
