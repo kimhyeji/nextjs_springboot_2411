@@ -3,6 +3,7 @@ package com.rest.domain.member.controller;
 import com.rest.domain.member.dto.MemberDto;
 import com.rest.domain.member.entity.Member;
 import com.rest.domain.member.service.MemberService;
+import com.rest.global.rq.Rq;
 import com.rest.global.rsData.RsData;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ApiV1MemberController {
     private final MemberService memberService;
-    private final HttpServletResponse resp;
+    private final Rq rq;
 
     @Getter
     public static class LoginRequestBody {
@@ -39,8 +40,8 @@ public class ApiV1MemberController {
         // username, password => accessToken
         RsData<MemberService.AuthAndMakeTokensResponseBody> authAndMakeTokensRs = memberService.authAndMakeTokens(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
-        _addHeaderCookie("accessToken", authAndMakeTokensRs.getData().getAccessToken());
-        _addHeaderCookie("refreshToken", authAndMakeTokensRs.getData().getRefreshToken());
+        rq.setCrossDomainCookie("accessToken", authAndMakeTokensRs.getData().getAccessToken());
+        rq.setCrossDomainCookie("refreshToken", authAndMakeTokensRs.getData().getRefreshToken());
 
         return RsData.of(
                 authAndMakeTokensRs.getResultCode(),
@@ -52,16 +53,5 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     public String me() {
         return "내 정보";
-    }
-
-    private void _addHeaderCookie(String tokenName, String token) {
-        ResponseCookie cookie = ResponseCookie.from(tokenName, token)
-                .path("/")
-                .sameSite("None")
-                .secure(true)
-                .httpOnly(true)
-                .build();
-
-        resp.addHeader("Set-Cookie", cookie.toString());
     }
 }
