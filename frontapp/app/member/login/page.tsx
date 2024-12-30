@@ -1,15 +1,22 @@
 'use client'
 
 import api from "@/app/utils/api";
-import {useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [user, setUser] = useState({username: '', passsword: ''});
+  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     await api.post("/members/login", user)
+      .then(() => {
+        alert('로그인 되었습니다.')
+        router.push("/")
+      })
+    
   }
 
   const handleChange = (e) => {
@@ -20,6 +27,10 @@ export default function Login() {
 
   const handleLogout = async () => {
     await api.post("/members/logout")
+      .then(() => {
+        alert('로그아웃 되었습니다.')
+        router.push("/")
+      })
   }
 
   return (

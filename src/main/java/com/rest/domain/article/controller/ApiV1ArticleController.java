@@ -1,7 +1,10 @@
 package com.rest.domain.article.controller;
 
+import com.rest.domain.article.dto.ArticleDto;
 import com.rest.domain.article.entity.Article;
 import com.rest.domain.article.service.ArticleService;
+import com.rest.domain.member.entity.Member;
+import com.rest.global.rq.Rq;
 import com.rest.global.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,23 +22,30 @@ import java.util.Optional;
 @RequestMapping("/api/v1/articles")
 public class ApiV1ArticleController {
     private final ArticleService articleService;
+    private final Rq rq;
 
     @Getter
     @AllArgsConstructor
     public static class ArticlesResponse {
-        private final List<Article> articles;
+        private final List<ArticleDto> articles;
     }
 
     @GetMapping("")
     public RsData<ArticlesResponse> getArticles() {
-        List<Article> articles = articleService.getList();
-        return RsData.of("S-1", "성공", new ArticlesResponse(articles));
+        List<ArticleDto> articleDtoList = articleService
+                .getList()
+                .stream()
+                .map(article -> new ArticleDto(article))
+                .toList();
+
+
+        return RsData.of("S-1", "성공", new ArticlesResponse(articleDtoList));
     }
 
     @Getter
     @AllArgsConstructor
     public static class ArticleResponse {
-        private final Article article;
+        private final ArticleDto article;
     }
 
     @GetMapping("/{id}")
@@ -43,7 +53,7 @@ public class ApiV1ArticleController {
         return articleService.getArticle(id).map(article -> RsData.of(
                 "S-1",
                 "성공",
-                new ArticleResponse(article)
+                new ArticleResponse(new ArticleDto(article))
         )).orElseGet(() -> RsData.of(
                 "F-1",
                 "%d번 게시물은 존재하지 않습니다.".formatted(id)
@@ -62,19 +72,21 @@ public class ApiV1ArticleController {
     @Getter
     @AllArgsConstructor
     public static class WriteResponse {
-        private final Article article;
+        private final ArticleDto articleDto;
     }
 
     @PostMapping("")
     public RsData<WriteResponse> write(@Valid @RequestBody WriteRequest writeRequest) {
-        RsData<Article> writeRs =  articleService.create(null, writeRequest.getSubject(), writeRequest.getContent());
+        Member member = rq.getMember();
+
+        RsData<Article> writeRs =  articleService.create(member, writeRequest.getSubject(), writeRequest.getContent());
 
         if ( writeRs.isFail() ) return (RsData) writeRs;
 
         return RsData.of(
                 writeRs.getResultCode(),
                 writeRs.getMsg(),
-                new WriteResponse(writeRs.getData())
+                new WriteResponse(new ArticleDto(writeRs.getData()))
         );
     }
 
