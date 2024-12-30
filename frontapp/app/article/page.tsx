@@ -23,6 +23,9 @@ export default function ArticleDetail() {
 
   const handleDelete  = async(id) => {
     await api.delete(`/articles/${id}`)
+      .then(() => {
+        fetchArticles()
+      })
   }
   
   return(

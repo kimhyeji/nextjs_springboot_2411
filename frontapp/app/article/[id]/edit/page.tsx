@@ -1,11 +1,12 @@
 'use client'
 
 import api from "@/app/utils/api"
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import {useState, useEffect } from 'react'
 
 export default function ArticleEdit() {
   const params = useParams()
+  const router = useRouter()
   const [article, setArticle] = useState({subject: '', content: ''})
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function ArticleEdit() {
     await api.patch(`/articles/${params.id}`, article)
     .then(function (response) {
         console.log(response);
+        router.push('/article')
       })
       .catch(function (error) {
         console.log(error);
@@ -35,7 +37,6 @@ export default function ArticleEdit() {
     const {name, value} = e.target;
 
     setArticle({...article, [name]: value})
-    // console.log({...article, [name]: value})
   }
 
   return (
