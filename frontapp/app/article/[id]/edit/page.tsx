@@ -8,21 +8,26 @@ export default function ArticleEdit() {
   const params = useParams()
   const router = useRouter()
   const [article, setArticle] = useState({subject: '', content: ''})
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    api.get('/members/me')
+    fetchArticle()
+  }, [])
+
+  const fetchArticle = async() => {
+    await api.get('/members/me')
       .then(response => console.log(response))
       .catch((err) => {
         console.log(err)
         alert('로그인 후 이용해주세요')
         router.push('/member/login')
       })
-    fetchArticle()
-  }, [])
 
-  const fetchArticle = () => {
-    api.get(`/articles/${params.id}`)
-      .then(response => setArticle(response.data.data.article))
+    await api.get(`/articles/${params.id}`)
+      .then(response => {
+        setArticle(response.data.data.article)
+        setIsLoading(true)
+      })
       .catch (err => {
           console.log(err)
       })
@@ -48,19 +53,26 @@ export default function ArticleEdit() {
 
   return (
     <>
-      <h4>게시물 수정</h4>
-      <form onSubmit={handleSubmit}>
-        <label>
-          제목 : 
-          <input type="text" name="subject" value={article.subject} onChange={handleChange}/>
-        </label>
-        <br />
-        <label>
-          내용 : 
-          <input type="text" name="content" value={article.content} onChange={handleChange}/>
-        </label>
-        <input type="submit" value="수정" />
-      </form>
+      {
+        isLoading ? 
+        <>
+          <h4>게시물 수정</h4>
+          <form onSubmit={handleSubmit}>
+            <label>
+              제목 : 
+              <input type="text" name="subject" value={article.subject} onChange={handleChange}/>
+            </label>
+            <br />
+            <label>
+              내용 : 
+              <input type="text" name="content" value={article.content} onChange={handleChange}/>
+            </label>
+            <input type="submit" value="수정" />
+          </form>
+        </>
+        :
+        <></>
+      }
     </>
   )
 }
