@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import api from '../utils/api'
+import api from '../../utils/api'
 
 export default function About() {
   const [member, setMember] = useState({})
