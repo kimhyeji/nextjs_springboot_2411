@@ -1,19 +1,17 @@
 package com.rest.domain.article.dto;
 
 import com.rest.domain.article.entity.Article;
-import com.rest.domain.member.entity.Member;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 public class ArticleDto {
-    private Long id;
-    private String subject;
-    private String author;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private final Long id;
+    private final String subject;
+    private final String author;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
 
     public ArticleDto(Article article) {
         this.id = article.getId();

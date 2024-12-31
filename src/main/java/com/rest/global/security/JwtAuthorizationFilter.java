@@ -4,17 +4,12 @@ import com.rest.domain.member.service.MemberService;
 import com.rest.global.rq.Rq;
 import com.rest.global.rsData.RsData;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor

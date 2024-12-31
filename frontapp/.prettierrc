@@ -1,0 +1,5 @@
+{
+  "tabWidth": 2, // 탭 간격
+  "semi": false, // 줄 끝에 ; 붙일건지
+  "singleQuote": true // false: "", true: ''
+}

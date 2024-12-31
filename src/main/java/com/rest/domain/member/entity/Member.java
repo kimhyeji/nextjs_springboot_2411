@@ -1,6 +1,5 @@
 package com.rest.domain.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rest.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.*;

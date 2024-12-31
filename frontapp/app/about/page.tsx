@@ -7,8 +7,9 @@ export default function About() {
   const [member, setMember] = useState({})
 
   useEffect(() => {
-    api.get('/members/me')
-      .then(response => setMember(response.data.data.memberDto))
+    api
+      .get('/members/me')
+      .then((response) => setMember(response.data.data.memberDto))
   }, [])
 
   return (

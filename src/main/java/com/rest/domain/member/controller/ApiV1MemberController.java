@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
