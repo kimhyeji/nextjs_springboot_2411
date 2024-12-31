@@ -19,9 +19,7 @@ export default function ArticleDetail() {
     queryFn: getArticle,
   })
 
-  if (error) {
-    console.log(error)
-  }
+  if (error) console.log(error)
 
   if (isLoading) <>Loading...</>
 
